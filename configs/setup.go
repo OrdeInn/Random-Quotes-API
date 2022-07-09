@@ -1,18 +1,16 @@
 package configs
 
-import(
+import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"time"
-	"go.mongodb.org/mongo-driver/mongo"
-    "go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
-func ConnectDB() *mongo.Client{
-	env := "mongodb+srv://emirhanoguz:Emirhan_1998@cluster0.yw1wg.mongodb.net/?retryWrites=true&w=majority"
-	client,err := mongo.NewClient(options.Client().ApplyURI(env))
+func ConnectDB() *mongo.Client {
+	client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
 
 	if err != nil {
 		log.Fatal(err)
@@ -35,10 +33,9 @@ func ConnectDB() *mongo.Client{
 	return client
 }
 
-
 var DB *mongo.Client = ConnectDB()
 
-func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection{
+func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 
 	collection := client.Database("golangAPI").Collection(collectionName)
 	return collection
