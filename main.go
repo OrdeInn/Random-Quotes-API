@@ -1,8 +1,9 @@
 package main
 
-import(
-	"orderinn.com/random-quotes/configs"
+import (
 	"github.com/gin-gonic/gin"
+	"orderinn.com/random-quotes/configs"
+	"orderinn.com/random-quotes/routes"
 )
 
 func main() {
@@ -11,11 +12,7 @@ func main() {
 
 	configs.ConnectDB()
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"data" : "Hello World!",
-		})
-	})
+	routes.UserRoute(router)
 
 	router.Run("localhost:8080")
 }
