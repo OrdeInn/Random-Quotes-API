@@ -7,7 +7,21 @@ import (
 
 func UserRoute(router *gin.Engine) {
 
-	router.GET("/random", controllers.GetRandomQuote())
+	protectedGroup := router.Group("/api")
+	publicGroup := router.Group("/")
 
-	router.POST("/", controllers.CreateQuote())
+	initProtectedRoutes(protectedGroup)
+	initPublicRoutes(publicGroup)
+}
+
+func initPublicRoutes(routerGroup *gin.RouterGroup) {
+	routerGroup.POST("/login", controllers.Login())
+	routerGroup.POST("/register", controllers.Register())
+}
+
+func initProtectedRoutes(routerGroup *gin.RouterGroup) {
+	routerGroup.Use(controllers.AuthorizationMiddleware())
+
+	routerGroup.GET("/random", controllers.GetRandomQuote())
+	routerGroup.POST("/", controllers.CreateQuote())
 }
